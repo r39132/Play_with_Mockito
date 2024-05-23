@@ -4,8 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Calculator {
-  private static final Logger logger = LoggerFactory.getLogger(Calculator.class);
 
+  private static final Logger logger = LoggerFactory.getLogger(Calculator.class);
+  private int computationsRun = 0;
   private MathService mathService;
 
   public Calculator(MathService mathService) {
@@ -15,6 +16,8 @@ public class Calculator {
   //Simple calculator to perform basic mathematical operations
   public double calculate(double firstOperand, double secondOperand, char operator) {
     logger.info("Calculating {} {} {}", firstOperand, operator, secondOperand);
+    computationsRun++;
+    this.printComputationsRun();
     switch (operator) {
       case '/': {
         return mathService.divide(firstOperand, secondOperand);
@@ -34,4 +37,11 @@ public class Calculator {
     }
   }
 
+  public int getComputationsRun() {
+    return computationsRun;
+  }
+
+  public void printComputationsRun() {
+    System.out.println("Computations run: " + getComputationsRun());
+  }
 }

@@ -3,6 +3,7 @@ package org.example;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -198,5 +199,26 @@ public class CalculatorTest {
     listAppender = new ListAppender();
     listAppender.start();
     logger.addAppender(listAppender);
+  }
+
+  @Test
+  public void testGetComputationsRun() {
+    // Act
+    calculator.calculate(10, 20, '+');
+    calculator.calculate(20, 10, '-');
+    calculator.calculate(10, 20, '*');
+    calculator.calculate(20, 10, '/');
+
+    // Assert
+    assertEquals(4, calculator.getComputationsRun());
+  }
+
+  @Test
+  public void testGetComputationsRunWithSpy() {
+    Calculator spyCalculator = org.mockito.Mockito.spy(calculator);
+    doReturn(10).when(spyCalculator).getComputationsRun();
+    spyCalculator.calculate(10, 20, '+');
+    verify(spyCalculator).printComputationsRun();
+    assertEquals(10, spyCalculator.getComputationsRun());
   }
 }
